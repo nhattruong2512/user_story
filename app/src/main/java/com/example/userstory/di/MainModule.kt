@@ -1,0 +1,27 @@
+package com.example.userstory.di
+
+import com.example.userstory.domain.usecase.MainUseCase
+import com.example.userstory.domain.usecase.impl.MainUseCaseImpl
+import com.example.userstory.presentation.presenter.MainPresenter
+import com.example.userstory.presentation.presenter.impl.MainPresenterImpl
+import com.example.userstory.presentation.ui.activity.MainActivity
+import com.example.userstory.presentation.ui.view.MainView
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+
+@Module
+@InstallIn(ActivityComponent::class)
+object MainModule {
+
+    @Provides
+    fun provideMainView(activity: MainActivity): MainView = activity
+
+    @Provides
+    fun provideMainUseCase(impl: MainUseCaseImpl): MainUseCase = impl
+
+    @Provides
+    fun provideMainPresenter(impl: MainPresenterImpl): MainPresenter = impl
+
+}
