@@ -1,16 +1,21 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.dagger.hilt.android)
+    id("org.jetbrains.kotlin.kapt")
+//    id("dagger.hilt.android.plugin")
+//    id("dagger.hilt.android.plugin") version libs.dagger-hilt.get()
+//    kotlin("kapt") // Annotation processing for Hilt
 }
 
 android {
     namespace = "com.example.userstory"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.userstory"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -38,6 +43,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+//    kapt {
+//        correctErrorTypes = true
+//    }
+
 }
 
 configurations.all {
@@ -45,6 +55,7 @@ configurations.all {
         force("org.jetbrains:annotations:23.0.0")
     }
 }
+
 
 dependencies {
 
@@ -60,14 +71,14 @@ dependencies {
 
     // Dagger Hilt
     implementation(libs.dagger.hilt.android)
-    implementation(libs.dagger.hilt.compiler)
-    implementation(libs.dagger.hilt.testing)
+    kapt(libs.dagger.hilt.compiler)
+
+
 
     // Room database
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
-    implementation(libs.room.testing)
+//    annotationProcessor(libs.room.compiler)
 
     // Retrofit
     implementation(libs.retrofit)
@@ -76,4 +87,8 @@ dependencies {
     // Okhttp
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+}
+
+kapt {
+    correctErrorTypes = true  // Enable error type correction for annotation processing
 }

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.userstory.R
 import com.example.userstory.domain.model.UserDetail
 import com.example.userstory.presentation.ui.view.UserDetailView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserDetailActivity: AppCompatActivity(), UserDetailView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

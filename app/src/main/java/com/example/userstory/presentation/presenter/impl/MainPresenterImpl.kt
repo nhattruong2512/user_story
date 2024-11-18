@@ -6,16 +6,16 @@ import com.example.userstory.presentation.ui.view.MainView
 import javax.inject.Inject
 
 class MainPresenterImpl @Inject constructor(
-    private val view: MainView,
+//    private val view: MainView,
     private val useCase: MainUseCase
 ): MainPresenter {
     override fun getUsers() {
         useCase.getUsers(20, 100,
             onSuccess = {
-
+//                view.onGetUsersSuccess(it)
             },
             onError = {
-
+//                view.onGetUsersError(it)
             }
         )
     }

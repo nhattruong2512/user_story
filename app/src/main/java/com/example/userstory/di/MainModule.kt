@@ -16,9 +16,6 @@ import dagger.hilt.android.components.ActivityComponent
 object MainModule {
 
     @Provides
-    fun provideMainView(activity: MainActivity): MainView = activity
-
-    @Provides
     fun provideMainUseCase(impl: MainUseCaseImpl): MainUseCase = impl
 
     @Provides
