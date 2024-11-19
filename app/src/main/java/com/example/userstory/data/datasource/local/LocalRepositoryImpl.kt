@@ -23,11 +23,11 @@ abstract class LocalRepositoryImpl: RoomDatabase(), LocalRepository {
         }
     }
 
-    override fun putUserDetail(user: UserDetail) {
-        userDao.putUser(user)
+    override suspend fun putUserDetail(user: UserDetail) {
+        userDao.putUser(user.toEntity())
     }
 
-    override fun getUser(loginName: String): UserDetail {
-        return userDao.getUser(loginName)
+    override suspend fun getUser(loginName: String): UserDetail {
+        return userDao.getUser(loginName).toUserDetail();
     }
 }

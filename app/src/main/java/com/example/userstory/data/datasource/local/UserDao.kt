@@ -9,8 +9,8 @@ import com.example.userstory.domain.model.UserDetail
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun putUser(user: UserDetail)
+    suspend fun putUser(user: UserEntity)
 
     @Query("SELECT * FROM users WHERE id LIKE :loginName")
-    fun getUser(loginName: String): UserDetail
+    suspend fun getUser(loginName: String): UserEntity
 }

@@ -7,15 +7,11 @@ import com.example.userstory.domain.usecase.UserDetailUseCase
 import javax.inject.Inject
 
 class UserDetailUseCaseImpl @Inject constructor(
-    private val restRepositoryImpl: RestRepository,
+    private val restRepository: RestRepository,
     private val localRepository: LocalRepository
 ): UserDetailUseCase {
-    override fun getUserDetail(
-        loginName: String,
-        onSuccess: (UserDetail) -> Unit,
-        onError: (Throwable) -> Unit
-    ) {
-        restRepositoryImpl.getUserDetail(loginName)
+    override suspend fun getUserDetail(loginName: String): UserDetail {
+        return restRepository.getUserDetail(loginName)
     }
 
 }

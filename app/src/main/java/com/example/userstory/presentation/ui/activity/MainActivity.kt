@@ -18,6 +18,7 @@ class MainActivity: AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        presenter.setView(this)
         presenter.getUsers()
     }
 

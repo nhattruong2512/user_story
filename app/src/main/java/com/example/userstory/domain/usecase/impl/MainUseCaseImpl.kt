@@ -9,13 +9,11 @@ import javax.inject.Inject
 class MainUseCaseImpl @Inject constructor(
     private val restRepository: RestRepository
 ): MainUseCase {
-    override fun getUsers(
+    override suspend fun getUsers(
         perPage: Int,
-        since: Int,
-        onSuccess: (List<UserInfo>) -> Unit,
-        onError: (Throwable) -> Unit
-    ) {
-        restRepository.getUsers(perPage, since)
+        since: Int
+    ): List<UserInfo> {
+        return restRepository.getUsers(perPage, since)
     }
 
 }
