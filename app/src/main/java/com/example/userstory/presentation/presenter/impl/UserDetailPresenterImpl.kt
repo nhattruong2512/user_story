@@ -6,8 +6,8 @@ import com.example.userstory.presentation.ui.view.UserDetailView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserDetailPresenterImpl @Inject constructor(
@@ -23,14 +23,13 @@ class UserDetailPresenterImpl @Inject constructor(
 
     override fun getUserDetail(loginName: String) {
         scope.launch {
-            try {
-                val data = withContext(Dispatchers.IO) {
-                    useCase.getUserDetail(loginName)
-                }
-                view.onGetUserDetailSuccess(data)
-            } catch (e: Exception) {
-                view.onGetUserDetailError(e)
+            useCase.getUserDetail(loginName).collect { user ->
+                view.onGetUserDetailSuccess(user)
             }
         }
+    }
+
+    override fun onDestroy() {
+        scope.cancel()
     }
 }

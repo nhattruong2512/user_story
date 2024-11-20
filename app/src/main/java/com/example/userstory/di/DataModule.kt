@@ -2,7 +2,6 @@ package com.example.userstory.di
 
 import android.content.Context
 import com.example.userstory.data.datasource.local.LocalRepositoryImpl
-//import androidx.multidex.BuildConfig
 import com.example.userstory.data.datasource.remote.RestApi
 import com.example.userstory.data.datasource.remote.RestRepositoryImpl
 import com.example.userstory.domain.repository.LocalRepository
@@ -50,10 +49,8 @@ object DataModule {
         val builder = OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
 
-//        if (BuildConfig.DEBUG) {
-//            builder.addInterceptor(loggingInterceptor)
-//        }
         return builder.build()
     }
 

@@ -40,14 +40,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 
-//    kapt {
-//        correctErrorTypes = true
-//    }
-
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 configurations.all {
@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -87,6 +88,12 @@ dependencies {
     // Okhttp
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+
+    // Glide
+    implementation(libs.glide)
+
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.runtime.ktx)
 }
 
 kapt {

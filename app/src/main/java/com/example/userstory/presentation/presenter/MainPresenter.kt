@@ -5,4 +5,6 @@ import com.example.userstory.presentation.ui.view.MainView
 interface MainPresenter {
     fun setView(view: MainView)
     fun getUsers()
+    fun loadMore(totalItems: Int)
+    fun onDestroy()
 }

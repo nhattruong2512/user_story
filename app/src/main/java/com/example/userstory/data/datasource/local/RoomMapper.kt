@@ -1,11 +1,10 @@
 package com.example.userstory.data.datasource.local
 
 import com.example.userstory.domain.model.UserDetail
-import kotlin.math.log
 
 internal fun UserDetail.toEntity(): UserEntity {
     return UserEntity(
-        id = login ?: "",
+        login = login ?: "",
         avatarUrl = avatarUrl ?: "",
         htmlUrl = htmlUrl ?: "",
         location = location ?: "",
@@ -16,12 +15,12 @@ internal fun UserDetail.toEntity(): UserEntity {
 
 internal fun UserEntity.toUserDetail(): UserDetail {
     return UserDetail(
-        location = location ?: "",
+        location = location,
         followers = followers,
         following = following
-    ).apply {
-        login = id ?: ""
-        avatarUrl = avatarUrl ?: ""
-        htmlUrl = htmlUrl ?: ""
+    ).also {
+        it.login = login
+        it.avatarUrl = avatarUrl
+        it.htmlUrl = htmlUrl
     }
 }

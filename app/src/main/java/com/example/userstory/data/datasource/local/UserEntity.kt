@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     @PrimaryKey
     @ColumnInfo("id")
-    var id: String,
+    var login: String,
 
     @ColumnInfo("avatar_url")
     var avatarUrl: String,
