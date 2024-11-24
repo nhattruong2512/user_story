@@ -1,4 +1,4 @@
-package com.example.userstory.data.datasource.remote
+package com.example.userstory.data.remote
 
 class BaseNetworkException (
     val responseMessage: String? = null,

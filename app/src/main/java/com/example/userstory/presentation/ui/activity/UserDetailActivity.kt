@@ -6,18 +6,20 @@ import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.userstory.databinding.ActivityUserDetailBinding
-import com.example.userstory.domain.model.UserDetail
-import com.example.userstory.presentation.presenter.UserDetailPresenter
-import com.example.userstory.presentation.ui.view.UserDetailView
 import com.example.userstory.presentation.utils.ImageLoader
+import com.example.userstory.presentation.viewmodel.UserDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserDetailActivity: AppCompatActivity(), UserDetailView {
+class UserDetailActivity: AppCompatActivity() {
 
     companion object {
         private const val LOGIN_NAME = "login_name"
@@ -28,8 +30,7 @@ class UserDetailActivity: AppCompatActivity(), UserDetailView {
             }
     }
 
-    @Inject
-    lateinit var presenter: UserDetailPresenter
+    private val viewModel: UserDetailViewModel by viewModels()
 
     private lateinit var binding: ActivityUserDetailBinding
 
@@ -37,9 +38,13 @@ class UserDetailActivity: AppCompatActivity(), UserDetailView {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        presenter.setView(this)
+        handleIntent()
+        initListener()
+    }
+
+    private fun handleIntent() {
         intent.getStringExtra(LOGIN_NAME)?.let { loginName ->
-            presenter.getUserDetail(loginName)
+            bindViewModel(loginName)
         } ?: {
             Toast.makeText(
                 this@UserDetailActivity,
@@ -48,39 +53,42 @@ class UserDetailActivity: AppCompatActivity(), UserDetailView {
             ).show()
             finish()
         }
+    }
 
+    private fun initListener() {
         binding.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
 
-    override fun onGetUserDetailSuccess(userDetail: UserDetail) {
-        with(binding) {
-            ImageLoader.loadAvatar(
-                requestManager =  Glide.with(this@UserDetailActivity),
-                url = userDetail.avatarUrl,
-                target = ivUserAvatar
-            )
+    private fun bindViewModel(loginName: String) {
+        lifecycleScope.launch {
+            viewModel.userDetail
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collect { user ->
+                    user?.let {
+                        with(binding) {
+                            ImageLoader.loadAvatar(
+                                requestManager =  Glide.with(this@UserDetailActivity),
+                                url = user.avatarUrl,
+                                target = ivUserAvatar
+                            )
 
-            tvUserName.text = userDetail.login
-            tvLocation.text = userDetail.location
-            tvFollowerCount.text = userDetail.followers.toString()
-            tvFollowingCount.text = userDetail.following.toString()
-            tvBlogLink.text = userDetail.htmlUrl
-            tvBlogLink.isClickable = true
-            tvBlogLink.movementMethod = LinkMovementMethod.getInstance()
-            val htmlUrl = userDetail.htmlUrl
-            val text = "<a href='${htmlUrl}'> $htmlUrl </a>"
-            tvBlogLink.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+                            tvUserName.text = user.login
+                            tvLocation.text = user.location
+                            tvFollowerCount.text = user.followers.toString()
+                            tvFollowingCount.text = user.following.toString()
+                            tvBlogLink.text = user.htmlUrl
+                            tvBlogLink.isClickable = true
+                            tvBlogLink.movementMethod = LinkMovementMethod.getInstance()
+                            val htmlUrl = user.htmlUrl
+                            val text = "<a href='${htmlUrl}'> $htmlUrl </a>"
+                            tvBlogLink.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+                        }
+                    }
+                }
         }
-    }
 
-    override fun onGetUserDetailError(error: Throwable) {
-        Toast.makeText(this@UserDetailActivity, error.message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
+        viewModel.getUserDetail(loginName)
     }
 }

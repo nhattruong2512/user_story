@@ -11,4 +11,4 @@ class UserDetail(
 
     @SerializedName("following")
     var following: Int = 0
-) : UserInfo()
+) : User()

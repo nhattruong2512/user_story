@@ -1,17 +1,18 @@
-package com.example.userstory.data.datasource.remote
+package com.example.userstory.data.remote
 
 import com.example.userstory.domain.model.UserDetail
-import com.example.userstory.domain.model.UserInfo
+import com.example.userstory.domain.model.User
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.QueryMap
+import retrofit2.http.Query
 
 interface RestApi {
     @GET("users")
     suspend fun getUsers(
-        @QueryMap options: Map<String, String>
-    ): Response<List<UserInfo>>
+        @Query("per_page") perPage: Int,
+        @Query("since") since: Int
+    ): Response<List<User>>
 
     @GET("users/{login_username}")
     suspend fun getUserDetail(

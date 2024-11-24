@@ -3,9 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.android)
     id("org.jetbrains.kotlin.kapt")
-//    id("dagger.hilt.android.plugin")
-//    id("dagger.hilt.android.plugin") version libs.dagger-hilt.get()
-//    kotlin("kapt") // Annotation processing for Hilt
 }
 
 android {
@@ -79,6 +76,7 @@ dependencies {
     // Room database
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.room.paging)
     kapt(libs.room.compiler)
 
     // Retrofit
@@ -94,6 +92,9 @@ dependencies {
 
     implementation(libs.paging.runtime)
     implementation(libs.paging.runtime.ktx)
+    implementation(libs.paging.common)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }
 
 kapt {

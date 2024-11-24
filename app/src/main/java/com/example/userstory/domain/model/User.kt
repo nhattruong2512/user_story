@@ -2,7 +2,7 @@ package com.example.userstory.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-open class UserInfo (
+open class User (
     @SerializedName("login")
     var login: String? = null,
 
